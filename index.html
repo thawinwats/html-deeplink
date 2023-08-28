@@ -19,14 +19,14 @@
       }
 
       // Simple device detection
-      const isiOS =
+      const isIOS =
         navigator.userAgent.match("iPad") ||
         navigator.userAgent.match("iPhone") ||
         navigator.userAgent.match("iPod")
 
       const isAndroid = navigator.userAgent.match("Android")
 
-      const isMobile = isiOS || isAndroid
+      const isMobile = isIOS || isAndroid
 
       function redirectToStore() {
         const storeLink = isIOS ? appStoreUrls.ios : appStoreUrls.android
