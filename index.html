@@ -6,20 +6,54 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body>
+  <body
+    class="bg-slate-950 flex flex-col justify-center items-center h-screen gap-4"
+  >
+    <h1 class="text-9xl font-bold text-slate-50">Hello world!</h1>
+
     <script>
-      function redirect() {
-        window.location = "satangpro://login"
+      const appScheme = "satangpro://login?" // Replace with your app's deep link URL
+      const appStoreUrls = {
+        ios: "https://apps.apple.com/us/app/satang-pro/id1513155132", // Replace with your app's App Store URL for iOS
+        android: "https://play.google.com/store/apps/details?id=com.satang.pro", // Replace with your app's Google Play Store URL for Android
+      }
+
+      // Simple device detection
+      const isiOS =
+        navigator.userAgent.match("iPad") ||
+        navigator.userAgent.match("iPhone") ||
+        navigator.userAgent.match("iPod")
+
+      const isAndroid = navigator.userAgent.match("Android")
+
+      const isMobile = isiOS || isAndroid
+
+      function redirectToStore() {
+        const storeLink = isIOS ? appStoreUrls.ios : appStoreUrls.android
+        window.location.href = storeLink
       }
 
       // Call the redirect function when the page loads
       window.onload = function () {
-        redirect()
+        const redirectToAppOrStore = () => {
+          const timeout = setTimeout(() => {
+            redirectToStore()
+          }, 3000) // Wait for 3 seconds before redirecting to the app store
+
+          window.location.href = appScheme
+
+          // Clear the timeout if the deep link successfully opens the app
+          window.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+              clearTimeout(timeout)
+            }
+          })
+        }
+
+        if (isMobile) {
+          redirectToAppOrStore()
+        }
       }
     </script>
-
-    <div className="flex flex-col justify-center items-center h-screen gap-4">
-      <h1 class="text-3xl font-bold underline">Hello world!</h1>
-    </div>
   </body>
 </html>
